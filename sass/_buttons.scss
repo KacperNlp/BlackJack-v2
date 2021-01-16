@@ -29,3 +29,23 @@
     }
   }
 }
+
+.button {
+  margin: 20px 0;
+  padding: 20px 35px;
+  font-size: 2rem;
+  text-transform: uppercase;
+  outline: none;
+  background: $buttonColor;
+  font-family: $contentFontFamily;
+  letter-spacing: 2px;
+  border: 2px solid $fontColor;
+  color: $fontColor;
+  transition: 0.3s;
+  &:hover {
+    color: $buttonColor;
+    background: $buttonBg;
+    border-color: $buttonColor;
+    cursor: pointer;
+  }
+}
