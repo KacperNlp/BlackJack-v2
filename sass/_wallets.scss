@@ -1,0 +1,14 @@
+.wallets {
+  position: absolute;
+  bottom: 150px;
+  left: 50px;
+  font-size: 1.8rem;
+}
+
+.player-wallet {
+  margin: 30px 0;
+
+  &__cash {
+    margin: 15px 0;
+  }
+}

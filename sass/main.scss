@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+@import "variables";
+
+html {
+  background: $siteBg;
+  color: $fontColor;
+  font-size: $fontSize;
+  font-family: $contentFontFamily;
+}
+
+@import "table";
+@import "buttons";
+@import "points";
+@import "wallets";
+
+.header {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 5rem;
+  & span {
+    color: rgb(0, 0, 0);
+  }
+}
+
+.game {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,35 @@
+.table {
+  width: 750px;
+  height: 650px;
+  border-radius: 20px;
+  padding: 30px;
+  background: $tableColor;
+  border: 3px solid $fontColor;
+}
+
+.player {
+  height: 300px;
+  &__name {
+    font-size: 2.5rem;
+    padding-bottom: 10px;
+    border-bottom: 2px solid $fontColor;
+    margin-bottom: 20px;
+  }
+
+  &__cards-container {
+    display: flex;
+  }
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 100px;
+  margin-right: 10px;
+  border-radius: 5px;
+  background: $fontColor;
+  font-size: 1.8rem;
+  box-shadow: $shadow;
+}

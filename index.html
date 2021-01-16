@@ -5,43 +5,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackJack</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Potta+One&family=Yusei+Magic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style/main.min.css">
 </head>
 
 <body>
     <main>
         <header>
-            <h1 class="header">BlackJack</h1>
+            <h1 class="header"><span>Black</span>Jack</h1>
         </header>
 
-        <!--table-->
-        <section class="table">
-            <div class="player">
-                <p class="player__name"></p>
-                <div class="player__cards-container" id="player-cards"></div>
-            </div>
-            <div class="player">
-                <p class="player__name"></p>
-                <div class="player__cards-container" id="AI-cards"></div>
-            </div>
-        </section>
+        <section class="game">
+            <!--table-->
+            <section class="table">
+                <div class="player">
+                    <p class="player__name" id="first-player-name">first player</p>
+                    <div class="player__cards-container" id="first-player-cards">
+                    </div>
+                </div>
+                <div class="player">
+                    <p class="player__name" id="second-player-name"> second player</p>
+                    <div class="player__cards-container" id="second-player-cards"></div>
+                </div>
+            </section>
 
-        <!--buttons-->
-        <section class="buttons-container">
-            <button class="buttons-container__button" id="take-card">Take card</button>
-            <button class="buttons-container__button" id="stay">Stay</button>
-        </section>
+            <!--buttons-->
+            <section class="buttons-container">
+                <button class="buttons-container__button" id="take-card">Take card</button>
+                <button class="buttons-container__button" id="stay">Stay</button>
+            </section>
 
-        <!--table/container with player and Ai=I points-->
-        <div class="points-container">
-            <div class="player-points">
-                <p class="player-points__name"></p>
-                <p class="player-points__points" id="player-points"></p>
+            <!--table/container with player and Ai=I points-->
+            <div class="points-container">
+                <h2>Points:</h2>
+                <div class="player-points">
+                    <p class="player-points__name"><span id="first-player-name">Player</span> points:</p>
+                    <p class="player-points__points" id="first-player-points">21</p>
+                </div>
+                <div class="player-points">
+                    <p class="player-points__name"><span id="second-player-name">Player</span> points:</p>
+                    <p class="player-points__points" id="second-player-points">25</p>
+                </div>
             </div>
-            <div class="player-points">
-                <p class="player-points__name"></p>
-                <p class="player-points__points" id="AI-points"></p>
-            </div>
-        </div>
+
+            <section class="wallets">
+                <h2>Player wallets:</h2>
+                <div class="player-wallet">
+                    <p><span id="first-player-name">sedsf</span> wallet:</p>
+                    <p class="player-wallet__cash">$ <span id="first-player-wallet">1000</span></p>
+                </div>
+                <div class="player-wallet">
+                    <p><span id="second-player-name">first player</span> wallet:</p>
+                    <p class="player-wallet__cash">$ <span id="second-player-wallet">1000</span></p>
+                </div>
+            </section>
+
+        </section>
     </main>
 </body>
 

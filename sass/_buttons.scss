@@ -1,0 +1,31 @@
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  right: 100px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  &__button {
+    padding: 20px 35px;
+    font-size: 2rem;
+    text-transform: uppercase;
+    outline: none;
+    background: $buttonColor;
+    font-family: $contentFontFamily;
+    letter-spacing: 2px;
+    border: 2px solid $fontColor;
+    color: $fontColor;
+    transition: 0.3s;
+    &:hover {
+      color: $buttonColor;
+      background: $buttonBg;
+      border-color: $buttonColor;
+      cursor: pointer;
+    }
+  }
+}
