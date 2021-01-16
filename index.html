@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackJack</title>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1 class="header">BlackJack</h1>
+        </header>
+
+        <!--table-->
+        <section class="table">
+            <div class="player">
+                <p class="player__name"></p>
+                <div class="player__cards-container" id="player-cards"></div>
+            </div>
+            <div class="player">
+                <p class="player__name"></p>
+                <div class="player__cards-container" id="AI-cards"></div>
+            </div>
+        </section>
+
+        <!--buttons-->
+        <section class="buttons-container">
+            <button class="buttons-container__button" id="take-card">Take card</button>
+            <button class="buttons-container__button" id="stay">Stay</button>
+        </section>
+
+        <!--table/container with player and Ai=I points-->
+        <div class="points-container">
+            <div class="player-points">
+                <p class="player-points__name"></p>
+                <p class="player-points__points" id="player-points"></p>
+            </div>
+            <div class="player-points">
+                <p class="player-points__name"></p>
+                <p class="player-points__points" id="AI-points"></p>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
