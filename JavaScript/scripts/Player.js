@@ -7,6 +7,7 @@ export class Player{
 
     #points = 0;
 
+    //points handle
     set points(score){
         this.#points += score;
     }
@@ -19,6 +20,8 @@ export class Player{
         this.cards.push(card);
     }
 
+
+    //wallet handle
     increaseCash(cash){
         this.wallet += cash;
     }

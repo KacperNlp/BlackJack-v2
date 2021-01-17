@@ -7,7 +7,7 @@ export class BindToHtml{
         return document.getElementById(id)
     }
 
-    bindElementsById(selector){
+    bindElementsBySelector(selector){
         return document.querySelectorAll(selector)
     }
 }

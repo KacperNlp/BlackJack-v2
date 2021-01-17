@@ -3,7 +3,8 @@ export const VISIBLE_LAYER = true;
 const HIDDEN_CLASS = 'hidden';
 
 class VisibilityOfLayers{
-    changeVisibility(isHidden, layer){
+
+    changeVisibility(layer, isHidden){
 
         if(isHidden){
             layer.classList.remove(HIDDEN_CLASS);
@@ -12,6 +13,7 @@ class VisibilityOfLayers{
         }
 
     }
+
 }
 
 export const visibilityOfLayers = new VisibilityOfLayers();

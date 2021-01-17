@@ -30,6 +30,18 @@
   margin-right: 10px;
   border-radius: 5px;
   background: $fontColor;
-  font-size: 1.8rem;
+  font-family: $cardsFontFamily;
+  font-size: 2rem;
   box-shadow: $shadow;
+}
+
+//card types
+.hearts,
+.diamonds {
+  color: red;
+}
+
+.spades,
+.clubs {
+  color: #121212;
 }

@@ -1,6 +1,7 @@
 import {BindToHtml} from './scripts/BindToHtml.js';
 import {settings} from './scripts/Settings.js';
 import {HIDDEN_LAYER, visibilityOfLayers, VISIBLE_LAYER} from './scripts/VisibilityOfLayers.js';
+import {game} from './scripts/Game.js'
 
 //main menu buttons id
 const NEW_GAME_WITH_PLAYER_BUTTON_ID = 'new-game-with-player';
@@ -32,7 +33,7 @@ class MainMenu extends BindToHtml{
         const button = this.bindById(NEW_GAME_WITH_PLAYER_BUTTON_ID);
 
         button.addEventListener('click', () =>{
-            visibilityOfLayers.changeVisibility(VISIBLE_LAYER, settings.layer);
+            visibilityOfLayers.changeVisibility(settings.layer, VISIBLE_LAYER);
             settings.withAI = false;
         })
 
@@ -43,7 +44,7 @@ class MainMenu extends BindToHtml{
         const button = this.bindById(NEW_GAME_WITH_AI_BUTTON_ID);
 
         button.addEventListener('click', () =>{
-            visibilityOfLayers.changeVisibility(VISIBLE_LAYER, settings.layer);
+            visibilityOfLayers.changeVisibility(settings.layer, VISIBLE_LAYER);
             settings.withAI = true;
         })
 
@@ -71,7 +72,11 @@ class MainMenu extends BindToHtml{
 
         settings.getInitialSettings(firstName, secondName, walletCash);
 
+        game.initGame();
+
         visibilityOfLayers.changeVisibility(this.layer, HIDDEN_LAYER);
+        visibilityOfLayers.changeVisibility(settings.layer, HIDDEN_LAYER);
+        visibilityOfLayers.changeVisibility(game.layer, VISIBLE_LAYER)
     }
 
 }
