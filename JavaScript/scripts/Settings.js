@@ -6,9 +6,28 @@ class Settings extends BindToHtml{
     constructor(){
         super(SETTINGS_LAYER_ID);
 
-        this.firstPlayer = null;
-        this.secondPlayer = null;
+        this.firstPlayerName = null;
+        this.secondPlayerName = null;
+
         this.walletCash = null;
+    }
+
+    //AI
+    #withAI = false;
+
+    set withAI(value){
+        this.#withAI = value;
+    }
+
+    get withAI(){
+        return this.#withAI;
+    }
+
+
+    getInitialSettings(firstName, secondName, walletCash){
+        this.firstPlayerName = firstName;
+        this.secondPlayerName = secondName;
+        this.walletCash = walletCash;
     }
 }
 
