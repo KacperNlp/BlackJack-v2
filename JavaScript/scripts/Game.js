@@ -17,6 +17,10 @@ const SECOND_PLAYER_WALLET_ID = 'second-player-wallet';
 const SECOND_PLAYER_POINTS_CONTAINER_ID = 'second-player-points';
 const SECOND_PLAYER_CARDS_CONTAINER_ID = 'second-player-cards';
 
+//buttons 
+const TAKE_CARD_BUTTON_ID = 'take-card';
+const STAY_BUTTON_ID = 'stay';
+
 
 class Game extends BindToHtml{
     constructor(){
@@ -41,6 +45,8 @@ class Game extends BindToHtml{
         this.#initPlayerNameInHtml(this.secondPlayer, this.bindElementsBySelector(SECOND_PLAYER_PLACES_FOR_NAME_CLASS));
 
         this.#dealCards();
+
+        this.#buttonsHandle();
 
     }
 
@@ -75,6 +81,11 @@ class Game extends BindToHtml{
 
     }
 
+    #buttonsHandle(){
+        this.#handleTakeCardButton();
+        this.#handleStayButton();
+    }
+
     //append card to player cards container
     #appendCard(id, card){
 
@@ -87,8 +98,6 @@ class Game extends BindToHtml{
     #calculatePlayersPoints(){
         this.firstPlayer.calculatePoints();
         this.secondPlayer.calculatePoints();
-
-        console.log(this.firstPlayer.points)
     }
 
     #setPlayersStats(){
@@ -106,6 +115,22 @@ class Game extends BindToHtml{
 
         secondPlayerPointsContainer.textContent = this.secondPlayer.points;
         secondPlayerWallet.textContent = this.secondPlayer.wallet;
+    }
+
+
+    //buttons handle
+    #handleTakeCardButton(){
+
+        const button = this.bindById(TAKE_CARD_BUTTON_ID);
+        button.addEventListener('click', ()=> console.log('works'))
+
+    }
+
+    #handleStayButton(){
+
+        const button = this.bindById(STAY_BUTTON_ID);
+        button.addEventListener('click', ()=> console.log('works'))
+
     }
 
 }
