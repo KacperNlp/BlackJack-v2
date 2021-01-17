@@ -40,7 +40,6 @@ class Game extends BindToHtml{
         this.#initPlayerNameInHtml(this.firstPlayer, this.bindElementsBySelector(FIRST_PLAYER_PLACES_FOR_NAME_CLASS));
         this.#initPlayerNameInHtml(this.secondPlayer, this.bindElementsBySelector(SECOND_PLAYER_PLACES_FOR_NAME_CLASS));
 
-        this.#initPlayersStats();
         this.#dealCards();
 
     }
@@ -53,23 +52,7 @@ class Game extends BindToHtml{
         
     }
 
-    #initPlayersStats(){
-
-        //first player
-        const firstPlayerPointsContainer  = this.bindById(FIRTS_PLAYER_POINTS_CONTAINER_ID);
-        const firstPlayerWallet = this.bindById(FIRTS_PLAYER_WALLET_ID);
-
-        firstPlayerPointsContainer.textContent = this.firstPlayer.points;
-        firstPlayerWallet.textContent = this.firstPlayer.wallet;
-
-        //second player
-        const secondPlayerPointsContainer  = this.bindById(SECOND_PLAYER_POINTS_CONTAINER_ID);
-        const secondPlayerWallet = this.bindById(SECOND_PLAYER_WALLET_ID);
-
-        secondPlayerPointsContainer.textContent = this.secondPlayer.points;
-        secondPlayerWallet.textContent = this.secondPlayer.wallet;
-    }
-
+    //deal two cards to all players
     #dealCards(){
 
         for(let numberOfDeal = 0; numberOfDeal < 2; numberOfDeal++){
@@ -86,8 +69,13 @@ class Game extends BindToHtml{
 
         }
 
+
+        this.#calculatePlayersPoints();
+        this.#setPlayersStats();
+
     }
 
+    //append card to player cards container
     #appendCard(id, card){
 
         const cardsContainer  = this.bindById(id);
@@ -95,6 +83,31 @@ class Game extends BindToHtml{
         cardsContainer.appendChild(card);
 
     }
+
+    #calculatePlayersPoints(){
+        this.firstPlayer.calculatePoints();
+        this.secondPlayer.calculatePoints();
+
+        console.log(this.firstPlayer.points)
+    }
+
+    #setPlayersStats(){
+
+        //first player
+        const firstPlayerPointsContainer  = this.bindById(FIRTS_PLAYER_POINTS_CONTAINER_ID);
+        const firstPlayerWallet = this.bindById(FIRTS_PLAYER_WALLET_ID);
+
+        firstPlayerPointsContainer.textContent = this.firstPlayer.points;
+        firstPlayerWallet.textContent = this.firstPlayer.wallet;
+
+        //second player
+        const secondPlayerPointsContainer  = this.bindById(SECOND_PLAYER_POINTS_CONTAINER_ID);
+        const secondPlayerWallet = this.bindById(SECOND_PLAYER_WALLET_ID);
+
+        secondPlayerPointsContainer.textContent = this.secondPlayer.points;
+        secondPlayerWallet.textContent = this.secondPlayer.wallet;
+    }
+
 }
 
 export const game = new Game();
