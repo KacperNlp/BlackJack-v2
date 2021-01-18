@@ -17,6 +17,11 @@ export class Player{
         this.cards.push(card);
     }
 
+    cleanStats(){
+        this.cards = [];
+        this.#points = 0;
+    }
+
 
     //wallet handle
     increaseCash(cash){
@@ -25,6 +30,7 @@ export class Player{
 
     decreaseCash(cash){
         this.wallet -= cash;
+        return cash;
     }
 
     calculatePoints(){

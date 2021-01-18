@@ -2,6 +2,7 @@ import {BindToHtml} from './BindToHtml.js';
 import {Player} from './Player.js';
 import {settings} from './Settings.js';
 import {Deck} from './Deck.js';
+import { GameState } from './GameState.js';
 
 const GAME_LAYER_ID = 'game';
 
@@ -31,12 +32,13 @@ class Game extends BindToHtml{
 
         this.deck = null;
         this.stay = false;
+        this.gameState = null;
     }
 
     initGame(){
 
-        this.deck = new Deck();
-        this.deck.shuffle();
+        this.gameState = new GameState();
+        this.#createDeck();//init new deck
 
         this.firstPlayer = new Player(settings.firstPlayerName, settings.walletCash, true);
         this.secondPlayer = new Player(settings.secondPlayerName, settings.walletCash, false);
@@ -49,6 +51,40 @@ class Game extends BindToHtml{
 
         this.#buttonsHandle();
 
+    }
+
+    #nextRoundInit = () =>{
+
+        //unlock first player moves
+        this.firstPlayer.moves = true;
+
+        //clean stats like point and cards in hand
+        this.firstPlayer.cleanStats();
+        this.secondPlayer.cleanStats();
+
+        //clean html
+        const firstPlayerCardsContainer = this.bindById(FIRST_PLAYER_CARDS_CONTAINER_ID);
+        const secondPlayerCardsContainer = this.bindById(SECOND_PLAYER_CARDS_CONTAINER_ID);
+
+        console.log(firstPlayerCardsContainer)
+
+        //clear cards containers
+        while(firstPlayerCardsContainer.firstChild){
+            firstPlayerCardsContainer.removeChild(firstPlayerCardsContainer.lastChild)
+        }
+
+        while(secondPlayerCardsContainer.firstChild){
+            secondPlayerCardsContainer.removeChild(secondPlayerCardsContainer.lastChild)
+        }
+
+        this.#createDeck();
+        this.#dealCards();
+
+    }
+
+    #createDeck(){
+        this.deck = new Deck();
+        this.deck.shuffle();
     }
 
     #initPlayerNameInHtml(player, placesForName){
@@ -77,8 +113,10 @@ class Game extends BindToHtml{
         }
 
         //cash for first cash deal
-        this.firstPlayer.decreaseCash(100);
-        this.secondPlayer.decreaseCash(100);
+        let moneyPool =  this.firstPlayer.decreaseCash(100);
+        moneyPool += this.secondPlayer.decreaseCash(100);
+
+        this.gameState.increaseMoneyPool(moneyPool)
 
         this.#calculatePlayersPoints();
         this.#setPlayersStats();
@@ -143,7 +181,8 @@ class Game extends BindToHtml{
         } 
 
         //cash for card
-        player.decreaseCash(50);
+        const cash = player.decreaseCash(50);
+        this.gameState.increaseMoneyPool(cash)
 
         const card = this.deck.pickOne();
         player.addCard(card)
@@ -166,7 +205,6 @@ class Game extends BindToHtml{
             }
         } 
         else if(this.secondPlayer.moves && !settings.withAI){
-            this.firstPlayer.moves = true;
             this.secondPlayer.moves = false;
             this.#checksEndOfRound();
         } 
@@ -175,12 +213,15 @@ class Game extends BindToHtml{
 
     #handleAI(player, AI){
         if(player.points < AI.points && player.points < 21 || player.points === 21 || player.points > 21){
+            this.#setPlayersStats();
+            this.#checksEndOfRound();
             return;
         }
 
         while(player.points >= AI.points){
 
-            AI.decreaseCash(50);
+            const cash = AI.decreaseCash(50);
+            this.gameState.increaseMoneyPool(cash);
 
             const card = this.deck.pickOne();
 
@@ -195,19 +236,39 @@ class Game extends BindToHtml{
     }
 
     #checksEndOfRound(){
-        if(this.firstPlayer.points === 21 || this.firstPlayer.points < 21 && this.firstPlayer.points > this.secondPlayer.points || this.secondPlayer.points > 21){
 
-            console.log(`${this.firstPlayer.name} won!`)
+        const wonMoney = this.gameState.clearMoneyPool()
 
-        }else if(this.secondPlayer.points === 21 || this.secondPlayer.points < 21 && this.secondPlayer.points > this.firstPlayer.points || this.firstPlayer.points > 21){
+        //first player won
+        if(this.firstPlayer.points === 21 
+            && this.secondPlayer.points !== 21 
+            || this.firstPlayer.points < 21 
+            && this.firstPlayer.points > this.secondPlayer.points 
+            || this.secondPlayer.points > 21){
+
+            console.log(`${this.firstPlayer.name} won!`);
+            this.firstPlayer.increaseCash(wonMoney);
+
+            //AI or second player won
+        }else if(this.secondPlayer.points === 21 
+            && this.firstPlayer.points !== 21 
+            || this.secondPlayer.points < 21 
+            && this.secondPlayer.points > this.firstPlayer.points 
+            || this.firstPlayer.points > 21){
 
             console.log(`${this.secondPlayer.name} won!`)
+            this.secondPlayer.increaseCash(wonMoney);
 
         }else{
 
-            console.log('drawn!')
+            console.log('drawn!');
+            this.secondPlayer.increaseCash(100);
+            this.firstPlayer.increaseCash(100);
 
         }
+
+        setTimeout(this.#nextRoundInit, 2000)
+
     }
 
 }
