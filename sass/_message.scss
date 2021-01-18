@@ -1,0 +1,40 @@
+.message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 800px;
+  height: 500px;
+  padding: 50px;
+  background: $siteBg;
+  border: 2px solid $fontColor;
+  box-shadow: $shadow;
+  text-transform: uppercase;
+  font-size: 4rem;
+
+  & button {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 20px 35px;
+    font-size: 2rem;
+    text-transform: uppercase;
+    outline: none;
+    background: $buttonColor;
+    font-family: $contentFontFamily;
+    letter-spacing: 2px;
+    border: 2px solid $fontColor;
+    color: $fontColor;
+    transition: 0.3s;
+    &:hover {
+      color: $buttonColor;
+      background: $buttonBg;
+      border-color: $buttonColor;
+      cursor: pointer;
+    }
+  }
+}
