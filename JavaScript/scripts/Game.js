@@ -30,6 +30,7 @@ class Game extends BindToHtml{
         this.secondPlayer = null;
 
         this.deck = null;
+        this.stay = false;
     }
 
     initGame(){
@@ -37,8 +38,8 @@ class Game extends BindToHtml{
         this.deck = new Deck();
         this.deck.shuffle();
 
-        this.firstPlayer = new Player(settings.firstPlayerName, settings.walletCash);
-        this.secondPlayer = new Player(settings.secondPlayerName, settings.walletCash);
+        this.firstPlayer = new Player(settings.firstPlayerName, settings.walletCash, true);
+        this.secondPlayer = new Player(settings.secondPlayerName, settings.walletCash, false);
 
         //bind and init players names with html
         this.#initPlayerNameInHtml(this.firstPlayer, this.bindElementsBySelector(FIRST_PLAYER_PLACES_FOR_NAME_CLASS));
@@ -75,6 +76,9 @@ class Game extends BindToHtml{
 
         }
 
+        //cash for first cash deal
+        this.firstPlayer.decreaseCash(100);
+        this.secondPlayer.decreaseCash(100);
 
         this.#calculatePlayersPoints();
         this.#setPlayersStats();
@@ -82,8 +86,13 @@ class Game extends BindToHtml{
     }
 
     #buttonsHandle(){
-        this.#handleTakeCardButton();
-        this.#handleStayButton();
+
+        const takeCardButton = this.bindById(TAKE_CARD_BUTTON_ID);
+        const stayButton = this.bindById(STAY_BUTTON_ID);
+
+        takeCardButton.addEventListener('click', this.#handleTakeCardButton)
+        stayButton.addEventListener('click', this.#handleStayButton)
+
     }
 
     //append card to player cards container
@@ -119,18 +128,86 @@ class Game extends BindToHtml{
 
 
     //buttons handle
-    #handleTakeCardButton(){
+    #handleTakeCardButton = () => {
 
-        const button = this.bindById(TAKE_CARD_BUTTON_ID);
-        button.addEventListener('click', ()=> console.log('works'))
+        let player;
+        let id;
+
+        if(this.firstPlayer.moves){
+            player = this.firstPlayer;
+            id = FIRST_PLAYER_CARDS_CONTAINER_ID;
+        } 
+        else if(this.secondPlayer.moves && !settings.withAI){
+            player = this.secondPlayer;
+            id = SECOND_PLAYER_CARDS_CONTAINER_ID;
+        } 
+
+        //cash for card
+        player.decreaseCash(50);
+
+        const card = this.deck.pickOne();
+        player.addCard(card)
+        this.#appendCard(id, card.render());
+
+        this.#calculatePlayersPoints();
+        this.#setPlayersStats();
 
     }
 
-    #handleStayButton(){
+    #handleStayButton = () => {
 
-        const button = this.bindById(STAY_BUTTON_ID);
-        button.addEventListener('click', ()=> console.log('works'))
+        if(this.firstPlayer.moves){
+            this.firstPlayer.moves = false;
 
+            if(!settings.withAI){
+                this.secondPlayer.moves = true;
+            }else{
+                this.#handleAI(this.firstPlayer, this.secondPlayer)
+            }
+        } 
+        else if(this.secondPlayer.moves && !settings.withAI){
+            this.firstPlayer.moves = true;
+            this.secondPlayer.moves = false;
+            this.#checksEndOfRound();
+        } 
+
+    }
+
+    #handleAI(player, AI){
+        if(player.points < AI.points && player.points < 21 || player.points === 21 || player.points > 21){
+            return;
+        }
+
+        while(player.points >= AI.points){
+
+            AI.decreaseCash(50);
+
+            const card = this.deck.pickOne();
+
+            AI.addCard(card);
+            this.#appendCard(SECOND_PLAYER_CARDS_CONTAINER_ID, card.render())
+
+            this.#calculatePlayersPoints();     
+        }
+
+        this.#setPlayersStats();
+        this.#checksEndOfRound();
+    }
+
+    #checksEndOfRound(){
+        if(this.firstPlayer.points === 21 || this.firstPlayer.points < 21 && this.firstPlayer.points > this.secondPlayer.points || this.secondPlayer.points > 21){
+
+            console.log(`${this.firstPlayer.name} won!`)
+
+        }else if(this.secondPlayer.points === 21 || this.secondPlayer.points < 21 && this.secondPlayer.points > this.firstPlayer.points || this.firstPlayer.points > 21){
+
+            console.log(`${this.secondPlayer.name} won!`)
+
+        }else{
+
+            console.log('drawn!')
+
+        }
     }
 
 }

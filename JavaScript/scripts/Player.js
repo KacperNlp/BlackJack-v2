@@ -1,8 +1,9 @@
 export class Player{
-    constructor(name, wallet){
+    constructor(name, wallet, moves){
         this.name = name;
         this.wallet = wallet;
         this.cards = [];
+        this.moves = moves;
     }
 
     #points = 0;
