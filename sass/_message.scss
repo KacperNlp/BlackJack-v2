@@ -44,3 +44,12 @@
     }
   }
 }
+
+.end-of-game {
+  flex-direction: column;
+
+  & h2 {
+    margin-bottom: 20px;
+    font-size: 6rem;
+  }
+}

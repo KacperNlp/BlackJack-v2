@@ -3,6 +3,8 @@ import {Player} from './Player.js';
 import {settings} from './Settings.js';
 import {Deck} from './Deck.js';
 import { GameState } from './GameState.js';
+import {message} from './Message.js';
+import { visibilityOfLayers, VISIBLE_LAYER } from './VisibilityOfLayers.js';
 
 const GAME_LAYER_ID = 'game';
 
@@ -62,9 +64,13 @@ class Game extends BindToHtml{
 
     }
 
-    #nextRoundInit = () =>{
+    nextRoundInit = () =>{
+
+        this.gameState.clearMoneyPool();
 
         this.gameState.increaseNumberOfRound();
+
+        console.log(this.firstPlayer.wallet)
 
         //unlock first player moves
         this.firstPlayer.moves = true;
@@ -73,20 +79,7 @@ class Game extends BindToHtml{
         this.firstPlayer.cleanStats();
         this.secondPlayer.cleanStats();
 
-        //clean html
-        const firstPlayerCardsContainer = this.bindById(FIRST_PLAYER_CARDS_CONTAINER_ID);
-        const secondPlayerCardsContainer = this.bindById(SECOND_PLAYER_CARDS_CONTAINER_ID);
-
-        console.log(firstPlayerCardsContainer)
-
-        //clear cards containers
-        while(firstPlayerCardsContainer.firstChild){
-            firstPlayerCardsContainer.removeChild(firstPlayerCardsContainer.lastChild)
-        }
-
-        while(secondPlayerCardsContainer.firstChild){
-            secondPlayerCardsContainer.removeChild(secondPlayerCardsContainer.lastChild)
-        }
+        this.cleanCardsContainer();
 
         this.#createDeck();
         this.#dealCards();
@@ -263,6 +256,7 @@ class Game extends BindToHtml{
     #checksEndOfRound(){
 
         const wonMoney = this.gameState.clearMoneyPool()
+        let winner;
 
         //first player won
         if(this.firstPlayer.points === 21 
@@ -272,6 +266,7 @@ class Game extends BindToHtml{
             || this.secondPlayer.points > 21){
 
             this.firstPlayer.increaseCash(wonMoney);
+            winner = this.firstPlayer.name;
 
             //AI or second player won
         }else if(this.secondPlayer.points === 21 
@@ -281,40 +276,80 @@ class Game extends BindToHtml{
             || this.firstPlayer.points > 21){
 
             this.secondPlayer.increaseCash(wonMoney);
+            winner = this.secondPlayer.name;
 
             //drawn
         }else{
 
-            this.secondPlayer.increaseCash(100);
-            this.firstPlayer.increaseCash(100);
+            this.secondPlayer.increaseCash(GAME_COSTS.costOfDeal);
+            this.firstPlayer.increaseCash(GAME_COSTS.costOfDeal);
+            winner = "No one, it's drawn"
 
         }
 
         const ableToPlayNextRound = this.#checksEndOfGame();
 
-        if(ableToPlayNextRound) setTimeout(this.#nextRoundInit, 2000);
+        if(ableToPlayNextRound){
+
+            const {layer} = message.messageForEndOfRound;
+
+            visibilityOfLayers.changeVisibility(layer, VISIBLE_LAYER);
+            message.initRoundMessage(winner);
+
+            setTimeout(this.nextRoundInit,2000)
+        }
 
     }
 
     #checksEndOfGame(){
 
-        const {costOfCard} = GAME_COSTS;
+        const {costOfDeal} = GAME_COSTS;
 
-        let playNextRoune = true;
+        let playNextRound = true;
 
-        if(this.firstPlayer.wallet < costOfCard || this.secondPlayer.wallet < costOfCard){
 
-            if(this.firstPlayer.wallet < costOfCard){
-                console.log('Dealer WON!');
-            }else if(this.secondPlayer.wallet < costOfCard){
-                console.log('player WON!')
+        if(this.firstPlayer.wallet < costOfDeal || this.secondPlayer.wallet < costOfDeal){
+
+            let winner;
+
+            //first player doesn't have money so the second player won game, it's the same situation in else if
+            if(this.firstPlayer.wallet < costOfDeal){
+            
+                winner = this.secondPlayer.name;
+
+                //first player won since second doesn's have money
+            }else if(this.secondPlayer.wallet < costOfDeal){
+                
+                winner = this.firstPlayer.name;
+
             }
 
-            playNextRoune = false;
+            //display message
+            const {layer} = message.messageForEndOfGame;
+            visibilityOfLayers.changeVisibility(layer, VISIBLE_LAYER);
+
+            message.initEndOfGameMessage(winner, this.gameState.numberOfRound);
+            playNextRound = false;
         }
 
-        return playNextRoune;
+        return playNextRound;
 
+    }
+
+    cleanCardsContainer(){
+
+        //clean html
+        const firstPlayerCardsContainer = this.bindById(FIRST_PLAYER_CARDS_CONTAINER_ID);
+        const secondPlayerCardsContainer = this.bindById(SECOND_PLAYER_CARDS_CONTAINER_ID);
+
+        //clear cards containers
+        while(firstPlayerCardsContainer.firstChild){
+            firstPlayerCardsContainer.removeChild(firstPlayerCardsContainer.lastChild)
+        }
+
+        while(secondPlayerCardsContainer.firstChild){
+            secondPlayerCardsContainer.removeChild(secondPlayerCardsContainer.lastChild)
+        }
     }
 
 }
