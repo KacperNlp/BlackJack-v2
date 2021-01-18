@@ -64,6 +64,8 @@ class Game extends BindToHtml{
 
     #nextRoundInit = () =>{
 
+        this.gameState.increaseNumberOfRound();
+
         //unlock first player moves
         this.firstPlayer.moves = true;
 
@@ -198,6 +200,8 @@ class Game extends BindToHtml{
             id = SECOND_PLAYER_CARDS_CONTAINER_ID;
         } 
 
+        if(player.wallet < GAME_COSTS.costOfCard) return;
+
         //cash for card
         const cash = player.decreaseCash(GAME_COSTS.costOfCard);
         this.gameState.increaseMoneyPool(cash)
@@ -238,9 +242,9 @@ class Game extends BindToHtml{
             return;
         }
 
-        while(player.points >= AI.points){
+        while(player.points >= AI.points && AI.wallet >= GAME_COSTS.costOfCard){
 
-            const cash = AI.decreaseCash(50);
+            const cash = AI.decreaseCash(GAME_COSTS.costOfCard);
             this.gameState.increaseMoneyPool(cash);
 
             const card = this.deck.pickOne();
@@ -286,7 +290,30 @@ class Game extends BindToHtml{
 
         }
 
-        setTimeout(this.#nextRoundInit, 2000)
+        const ableToPlayNextRound = this.#checksEndOfGame();
+
+        if(ableToPlayNextRound) setTimeout(this.#nextRoundInit, 2000);
+
+    }
+
+    #checksEndOfGame(){
+
+        const {costOfCard} = GAME_COSTS;
+
+        let playNextRoune = true;
+
+        if(this.firstPlayer.wallet < costOfCard || this.secondPlayer.wallet < costOfCard){
+
+            if(this.firstPlayer.wallet < costOfCard){
+                console.log('Dealer WON!');
+            }else if(this.secondPlayer.wallet < costOfCard){
+                console.log('player WON!')
+            }
+
+            playNextRoune = false;
+        }
+
+        return playNextRoune;
 
     }
 
