@@ -35,14 +35,20 @@ class Message extends BindToHtml{
 
     //round message
     initRoundMessage(winner){
-        const {button, layer} = this.messageForEndOfRound;
+        const {button} = this.messageForEndOfRound;
 
         this.#initRoundMessageContent(winner);
 
-        button.addEventListener('click', ()=>{
-            visibilityOfLayers.changeVisibility(layer, HIDDEN_LAYER);
-        })
+        button.addEventListener('click', this.#roundMessageButtonHandle)
     }
+
+    #roundMessageButtonHandle = (event)=>{
+        const {layer} = message.messageForEndOfRound;
+
+        event.target.removeEventListener(event.type, this.#roundMessageButtonHandle);
+        game.nextRoundInit();
+        visibilityOfLayers.changeVisibility(layer, HIDDEN_LAYER);
+    } 
 
     #initRoundMessageContent(winner){
         const {content} = this.messageForEndOfRound;

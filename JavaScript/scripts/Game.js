@@ -4,7 +4,7 @@ import {settings} from './Settings.js';
 import {Deck} from './Deck.js';
 import { GameState } from './GameState.js';
 import {message} from './Message.js';
-import { visibilityOfLayers, VISIBLE_LAYER } from './VisibilityOfLayers.js';
+import { HIDDEN_LAYER, visibilityOfLayers, VISIBLE_LAYER } from './VisibilityOfLayers.js';
 
 const GAME_LAYER_ID = 'game';
 
@@ -69,8 +69,6 @@ class Game extends BindToHtml{
         this.gameState.clearMoneyPool();
 
         this.gameState.increaseNumberOfRound();
-
-        console.log(this.firstPlayer.wallet)
 
         //unlock first player moves
         this.firstPlayer.moves = true;
@@ -295,8 +293,7 @@ class Game extends BindToHtml{
 
             visibilityOfLayers.changeVisibility(layer, VISIBLE_LAYER);
             message.initRoundMessage(winner);
-
-            setTimeout(this.nextRoundInit,2000)
+            
         }
 
     }
