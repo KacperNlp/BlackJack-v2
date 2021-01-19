@@ -12,9 +12,9 @@ There are two ways to play in this game:
 
 <br/><br/>
 Round - to win round player must score 21 points or have more points than opponent (if everyone has less than 21 points). Every time when you start next round, the deck is shuffle and when croupier deals the cards he will takes the last four cards from array of cards.
-<br/>
+<br/><br/>
 Win game - to win game player (or AI) need to lead opponent to bankruptcy.
-<br/>
+<br/><br/>
 Take card - every time when player will decide to take one card, he will pay 50$ for it and croupier/dealer will give him the last card from deck.
 Stay - when player chooses to stay, he don't do anything in round and he will wait for opponent moves.
 
