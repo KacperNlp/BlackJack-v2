@@ -64,8 +64,6 @@ class MainMenu extends BindToHtml{
 
         event.preventDefault();
 
-        animation.outputAnimation(`#${SETTINGS_LAYER_ID}`);//output animation
-
         const firstPlayerInputValue = this.bindById(FIRST_PLAYER_NAME_INPUT_ID).value;
         const secondPlayerInputValue = this.bindById(SECOND_PLAYER_NAME_INPUT_ID).value;
         const walletInputValue = this.bindById(WALLET_CASH_INPUT_ID).value;
@@ -77,6 +75,8 @@ class MainMenu extends BindToHtml{
         settings.getInitialSettings(firstName, secondName, walletCash);
 
         if(walletCash < 100) return;
+
+        animation.outputAnimation(`#${SETTINGS_LAYER_ID}`);//output animation
 
         game.initGame();
 
