@@ -48,4 +48,10 @@
     border-color: $buttonColor;
     cursor: pointer;
   }
+
+  &--return {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+  }
 }

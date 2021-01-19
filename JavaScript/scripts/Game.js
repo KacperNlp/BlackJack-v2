@@ -5,6 +5,7 @@ import {Deck} from './Deck.js';
 import { GameState } from './GameState.js';
 import {message} from './Message.js';
 import { HIDDEN_LAYER, visibilityOfLayers, VISIBLE_LAYER } from './VisibilityOfLayers.js';
+import { mainMenu } from '../MainMenu.js';
 
 const GAME_LAYER_ID = 'game';
 
@@ -23,6 +24,7 @@ const SECOND_PLAYER_CARDS_CONTAINER_ID = 'second-player-cards';
 //buttons 
 const TAKE_CARD_BUTTON_ID = 'take-card';
 const STAY_BUTTON_ID = 'stay';
+const RETURN_BUTTON_ID = 'return';
 
 const GAME_COSTS = {
     costOfCard: 50,
@@ -48,6 +50,7 @@ class Game extends BindToHtml{
 
     initGame(){
 
+        this.#cleanCardsContainer();
         this.gameState = new GameState();
         this.#createDeck();//init new deck
 
@@ -61,6 +64,7 @@ class Game extends BindToHtml{
         this.#dealCards();
 
         this.#buttonsHandle();
+
 
     }
 
@@ -77,7 +81,7 @@ class Game extends BindToHtml{
         this.firstPlayer.cleanStats();
         this.secondPlayer.cleanStats();
 
-        this.cleanCardsContainer();
+        this.#cleanCardsContainer();
 
         this.#createDeck();
         this.#dealCards();
@@ -133,6 +137,8 @@ class Game extends BindToHtml{
 
         takeCardButton.addEventListener('click', this.#handleTakeCardButton)
         stayButton.addEventListener('click', this.#handleStayButton)
+
+        this.#handleReturnButton();
 
     }
 
@@ -223,6 +229,15 @@ class Game extends BindToHtml{
             this.#checksEndOfRound();
         } 
 
+    }
+
+    #handleReturnButton(){
+        const button = this.bindById(RETURN_BUTTON_ID);
+
+        button.addEventListener('click', ()=>{
+            visibilityOfLayers.changeVisibility(mainMenu.layer, VISIBLE_LAYER);
+            visibilityOfLayers.changeVisibility(this.layer, HIDDEN_LAYER);
+        })
     }
 
     #handleAI(player, AI){
@@ -333,7 +348,7 @@ class Game extends BindToHtml{
 
     }
 
-    cleanCardsContainer(){
+    #cleanCardsContainer(){
 
         //clean html
         const firstPlayerCardsContainer = this.bindById(FIRST_PLAYER_CARDS_CONTAINER_ID);

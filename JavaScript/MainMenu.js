@@ -67,7 +67,7 @@ class MainMenu extends BindToHtml{
         const walletInputValue = this.bindById(WALLET_CASH_INPUT_ID).value;
 
         const firstName = firstPlayerInputValue ? firstPlayerInputValue : 'Player';
-        const secondName = secondPlayerInputValue ? secondPlayerInputValue : 'Dealer';
+        const secondName = secondPlayerInputValue ? secondPlayerInputValue : 'Croupier';
         const walletCash = walletInputValue ? walletInputValue : 1000;
 
         settings.getInitialSettings(firstName, secondName, walletCash);

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackJack</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+        integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Potta+One&family=Yusei+Magic&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style/main.min.css">
@@ -18,8 +20,10 @@
 
         <section class="main-menu" id="main-menu">
             <h2>Let's play!</h2>
-            <button class="button" id="new-game-with-player">New Game (1 vs 1)</button>
-            <button class="button" id="new-game-with-AI">New Game (1 vs AI)</button>
+            <button class="button" id="new-game-with-player">New Game (<span class="fas fa-user"></span> vs <span
+                    class="fas fa-user"></span>)</button>
+            <button class="button" id="new-game-with-AI">New Game (<span class="fas fa-user"></span> vs <span
+                    class="fas fa-desktop"></span>)</button>
         </section>
 
         <div class="game-settings hidden" id="settings-layer">
@@ -103,6 +107,7 @@
                 <button id="end-game-message-button">Go to Menu!</button>
             </div>
 
+            <button class="button button--return" id="return"><span class="fas fa-reply"></span> Return</button>
         </section>
     </main>
 
