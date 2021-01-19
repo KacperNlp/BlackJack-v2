@@ -35,6 +35,7 @@ class MainMenu extends BindToHtml{
 
         button.addEventListener('click', () =>{
             visibilityOfLayers.changeVisibility(settings.layer, VISIBLE_LAYER);
+            animation.inputAnimation(`#${SETTINGS_LAYER_ID}`);//input animation
             settings.withAI = false;
         })
 
@@ -74,6 +75,7 @@ class MainMenu extends BindToHtml{
 
         settings.getInitialSettings(firstName, secondName, walletCash);
 
+        console.log(walletCash)
         if(walletCash < 100) return;
 
         animation.outputAnimation(`#${SETTINGS_LAYER_ID}`);//output animation
