@@ -3,6 +3,7 @@ export class GameState{
     constructor(){
         this.moneyPool = 0;
         this.numberOfRound = 0;
+        this.pointsToWon = 21;
     }
 
     increaseMoneyPool(cash){

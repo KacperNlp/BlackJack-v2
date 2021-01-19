@@ -3,9 +3,10 @@ import {Player} from './Player.js';
 import {settings} from './Settings.js';
 import {Deck} from './Deck.js';
 import { GameState } from './GameState.js';
-import {message} from './Message.js';
+import {message, ROUND_MESSAGE_LAYER_ID, END_OF_GAME_MESSAGE_LAYER_ID} from './Message.js';
 import { HIDDEN_LAYER, visibilityOfLayers, VISIBLE_LAYER } from './VisibilityOfLayers.js';
 import { mainMenu } from '../MainMenu.js';
+import {animation} from './Animations.js'
 
 const GAME_LAYER_ID = 'game';
 
@@ -46,11 +47,13 @@ class Game extends BindToHtml{
         this.deck = null;
         this.stay = false;
         this.gameState = null;
+
+        this.numberOfCardsPerRound = 7;
     }
 
     initGame(){
 
-        this.#cleanCardsContainer();
+        this.cleanCardsContainer();
         this.gameState = new GameState();
         this.#createDeck();//init new deck
 
@@ -81,7 +84,7 @@ class Game extends BindToHtml{
         this.firstPlayer.cleanStats();
         this.secondPlayer.cleanStats();
 
-        this.#cleanCardsContainer();
+        this.cleanCardsContainer();
 
         this.#createDeck();
         this.#dealCards();
@@ -197,7 +200,7 @@ class Game extends BindToHtml{
             id = SECOND_PLAYER_CARDS_CONTAINER_ID;
         } 
 
-        if(player.wallet < GAME_COSTS.costOfCard) return;
+        if(player.wallet < GAME_COSTS.costOfCard || player.cards.length > this.numberOfCardsPerRound) return;
 
         //cash for card
         const cash = player.decreaseCash(GAME_COSTS.costOfCard);
@@ -241,7 +244,7 @@ class Game extends BindToHtml{
     }
 
     #handleAI(player, AI){
-        if(player.points < AI.points && player.points < 21 || player.points === 21 || player.points > 21){
+        if(player.points < AI.points && player.points < this.gameState.pointsToWon || player.points === this.gameState.pointsToWon || player.points > this.gameState.pointsToWon){
             this.#setPlayersStats();
             this.#setGameState();
             this.#checksEndOfRound();
@@ -272,21 +275,21 @@ class Game extends BindToHtml{
         let winner;
 
         //first player won
-        if(this.firstPlayer.points === 21 
-            && this.secondPlayer.points !== 21 
-            || this.firstPlayer.points < 21 
+        if(this.firstPlayer.points === this.gameState.pointsToWon 
+            && this.secondPlayer.points !== this.gameState.pointsToWon 
+            || this.firstPlayer.points < this.gameState.pointsToWon 
             && this.firstPlayer.points > this.secondPlayer.points 
-            || this.secondPlayer.points > 21){
+            || this.secondPlayer.points > this.gameState.pointsToWon){
 
             this.firstPlayer.increaseCash(wonMoney);
             winner = this.firstPlayer.name;
 
             //AI or second player won
-        }else if(this.secondPlayer.points === 21 
-            && this.firstPlayer.points !== 21 
-            || this.secondPlayer.points < 21 
+        }else if(this.secondPlayer.points === this.gameState.pointsToWon 
+            && this.firstPlayer.points !== this.gameState.pointsToWon 
+            || this.secondPlayer.points < this.gameState.pointsToWon 
             && this.secondPlayer.points > this.firstPlayer.points 
-            || this.firstPlayer.points > 21){
+            || this.firstPlayer.points > this.gameState.pointsToWon){
 
             this.secondPlayer.increaseCash(wonMoney);
             winner = this.secondPlayer.name;
@@ -307,6 +310,7 @@ class Game extends BindToHtml{
             const {layer} = message.messageForEndOfRound;
 
             visibilityOfLayers.changeVisibility(layer, VISIBLE_LAYER);
+            animation.inputAnimation(`#${ROUND_MESSAGE_LAYER_ID}`);
             message.initRoundMessage(winner);
             
         }
@@ -339,6 +343,7 @@ class Game extends BindToHtml{
             //display message
             const {layer} = message.messageForEndOfGame;
             visibilityOfLayers.changeVisibility(layer, VISIBLE_LAYER);
+            animation.inputAnimation(`#${END_OF_GAME_MESSAGE_LAYER_ID}`);
 
             message.initEndOfGameMessage(winner, this.gameState.numberOfRound);
             playNextRound = false;
@@ -348,7 +353,7 @@ class Game extends BindToHtml{
 
     }
 
-    #cleanCardsContainer(){
+    cleanCardsContainer(){
 
         //clean html
         const firstPlayerCardsContainer = this.bindById(FIRST_PLAYER_CARDS_CONTAINER_ID);

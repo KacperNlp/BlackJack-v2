@@ -1,6 +1,6 @@
 import {BindToHtml} from './BindToHtml.js'
 
-const SETTINGS_LAYER_ID = 'settings-layer';
+export const SETTINGS_LAYER_ID = 'settings-layer';
 
 class Settings extends BindToHtml{
     constructor(){

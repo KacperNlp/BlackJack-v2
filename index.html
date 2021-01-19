@@ -39,7 +39,7 @@
 
                 <!--cash in the wallet-->
                 <label for="wallet-settings">Cash in the wallet: </label>
-                <input type="number" id="wallet-settings" value="1000" maxlength="20">
+                <input type="number" id="wallet-settings" value="1000" max="100000" min="100">
                 <button class="button" id="settings-button">Start</button>
             </form>
         </div>
@@ -94,23 +94,23 @@
                 <p>Money pool: $<span id="money-pool">0</span></p>
             </section>
 
-            <div class="message hidden" id="round-message">
-                <h2>Round Winner:<span id="round-winner-name" class="message__name">player</span></h2>
-                <button id="round-message-button">Next Round!</button>
-            </div>
-
-            <div class="message end-of-game hidden" id="end-of-game-message">
-                <h2><span id="end-of-game-message-winner-name" class="end-of-game__name">player</span> won!</h2>
-                <p class="end-of-game__number-of-rounds">Number of rounds: <span
-                        id="end-of-game-message-rounds">0</span>
-                </p>
-                <button id="end-game-message-button">Go to Menu!</button>
-            </div>
-
             <button class="button button--return" id="return"><span class="fas fa-reply"></span> Return</button>
         </section>
+
+        <div class="message hidden" id="round-message">
+            <h2>Round Winner:<span id="round-winner-name" class="message__name">player</span></h2>
+            <button id="round-message-button">Next Round!</button>
+        </div>
+
+        <div class="message end-of-game hidden" id="end-of-game-message">
+            <h2><span id="end-of-game-message-winner-name" class="end-of-game__name">player</span> won!</h2>
+            <p class="end-of-game__number-of-rounds">Number of rounds: <span id="end-of-game-message-rounds">0</span>
+            </p>
+            <button id="end-game-message-button">Go to Menu!</button>
+        </div>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
     <script src="/JavaScript/MainMenu.js" type="module"></script>
 </body>
 
