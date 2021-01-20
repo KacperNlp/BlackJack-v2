@@ -100,7 +100,6 @@ class Game extends BindToHtml{
     //deal two cards to all players
     #dealCards() {
         for(let numberOfDeal = 0; numberOfDeal < 2; numberOfDeal++){
-            
             //first player
             const firstPlayerCard = this.deck.pickOne();
             this.firstPlayer.addCard(firstPlayerCard);
@@ -110,7 +109,6 @@ class Game extends BindToHtml{
             const secondPlayerCard = this.deck.pickOne();
             this.secondPlayer.addCard(secondPlayerCard);
             this.#appendCard(SECOND_PLAYER_CARDS_CONTAINER_ID, secondPlayerCard.render());
-
         }
 
         //cash for first cash deal
