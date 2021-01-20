@@ -26,40 +26,35 @@ export const CardTypesSigns = {
 }
 
 export class Deck{
-    constructor(){
+    constructor() {
         this.cards = [];
         this.#generateCards();
     }
 
-    #generateCards(){
-
+    #generateCards() {
         CardsTypes.forEach(type =>{
             CardsWeights.forEach(weight => {
                 this.cards.push(new Card(type, weight));
             })
         })
-
     }
 
-    shuffle(){
-
+    shuffle() {
         for(let i = this.cards.length - 1; i > 0; i--){
-
             const randomCardId = Math.floor(Math.random() * i);
-
-            const currentCard = this.cards[i];
-
-            //swap cards
-            this.cards[i] = this.cards[randomCardId];
-            this.cards[randomCardId] = currentCard;
-
+            [
+                this.cards[i], 
+                this.cards[randomCardId]
+            ]
+             = 
+             [
+                this.cards[randomCardId], 
+                this.cards[i]
+            ]
         }
-
     }
 
     pickOne(){
-
         return this.cards.pop();
-
     }
 }

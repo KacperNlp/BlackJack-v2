@@ -1,51 +1,43 @@
-import {BindToHtml} from './scripts/BindToHtml.js';
-import {settings, SETTINGS_LAYER_ID} from './scripts/Settings.js';
-import {HIDDEN_LAYER, visibilityOfLayers, VISIBLE_LAYER} from './scripts/VisibilityOfLayers.js';
-import {game} from './scripts/Game.js'
+import { BindToHtml } from './scripts/BindToHtml.js';
+import { settings, SETTINGS_LAYER_ID } from './scripts/Settings.js';
+import { HIDDEN_LAYER, visibilityOfLayers, VISIBLE_LAYER } from './scripts/VisibilityOfLayers.js';
+import { game } from './scripts/Game.js'
 import { animation } from './scripts/Animations.js';
 
-//main menu buttons id
+const FIRST_PLAYER_NAME_INPUT_ID = 'first-player';
+const MAIN_MENU_LAYER_ID = 'main-menu'
 const NEW_GAME_WITH_PLAYER_BUTTON_ID = 'new-game-with-player';
 const NEW_GAME_WITH_AI_BUTTON_ID = 'new-game-with-AI';
-
-//settings form inputs ID
-const FIRST_PLAYER_NAME_INPUT_ID = 'first-player';
 const SECOND_PLAYER_NAME_INPUT_ID = 'second-player';
+const SETTINGS_BUTTON_ID = 'settings-button';
 const WALLET_CASH_INPUT_ID = 'wallet-settings';
 
-const SETTINGS_BUTTON_ID = 'settings-button';
-
-const MAIN_MENU_LAYER_ID = 'main-menu'
-
-class MainMenu extends BindToHtml{
-    constructor(){
+class MainMenu extends BindToHtml {
+    constructor() {
         super(MAIN_MENU_LAYER_ID);
         this.#init();
     }
 
-    #init(){
+    #init() {
         this.#withPlayerButtonHandle();
         this.#withAIButtonHandle();
         this.#handleSettingsButton();
     }
 
-    #withPlayerButtonHandle(){
-
+    #withPlayerButtonHandle() {
         const button = this.bindById(NEW_GAME_WITH_PLAYER_BUTTON_ID);
 
-        button.addEventListener('click', () =>{
+        button.addEventListener('click', () => {
             visibilityOfLayers.changeVisibility(settings.layer, VISIBLE_LAYER);
             animation.inputAnimation(`#${SETTINGS_LAYER_ID}`);//input animation
             settings.withAI = false;
         })
-
     }
 
-    #withAIButtonHandle(){
-
+    #withAIButtonHandle() {
         const button = this.bindById(NEW_GAME_WITH_AI_BUTTON_ID);
 
-        button.addEventListener('click', () =>{
+        button.addEventListener('click', () => {
             visibilityOfLayers.changeVisibility(settings.layer, VISIBLE_LAYER);
             animation.inputAnimation(`#${SETTINGS_LAYER_ID}`);//input animation
             settings.withAI = true;
@@ -53,16 +45,13 @@ class MainMenu extends BindToHtml{
 
     }
 
-    #handleSettingsButton(){
-
+    #handleSettingsButton() {
         const button = this.bindById(SETTINGS_BUTTON_ID);
 
         button.addEventListener('click', this.#handleSettingsForm);
-
     }
 
-    #handleSettingsForm = (event) =>{
-
+    #handleSettingsForm = (event) => {
         event.preventDefault();
 
         const firstPlayerInputValue = this.bindById(FIRST_PLAYER_NAME_INPUT_ID).value;
@@ -75,8 +64,7 @@ class MainMenu extends BindToHtml{
 
         settings.getInitialSettings(firstName, secondName, walletCash);
 
-        console.log(walletCash)
-        if(walletCash < 100) return;
+        if (walletCash < 100) return;
 
         animation.outputAnimation(`#${SETTINGS_LAYER_ID}`);//output animation
 
@@ -86,12 +74,11 @@ class MainMenu extends BindToHtml{
         visibilityOfLayers.changeVisibility(this.layer, HIDDEN_LAYER);
 
         //time for output animation
-        setTimeout(()=>{
+        setTimeout(() => {
             visibilityOfLayers.changeVisibility(settings.layer, HIDDEN_LAYER);
-        },400)
+        }, 400)
     }
 
 }
-
 
 export const mainMenu = new MainMenu();

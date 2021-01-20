@@ -38,7 +38,7 @@ const MONEY_POOL_CONTAINER_ID = 'money-pool';
 
 
 class Game extends BindToHtml{
-    constructor(){
+    constructor() {
         super(GAME_LAYER_ID);
 
         this.firstPlayer = null;
@@ -51,8 +51,7 @@ class Game extends BindToHtml{
         this.numberOfCardsPerRound = 7;
     }
 
-    initGame(){
-
+    initGame() {
         this.cleanCardsContainer();
         this.gameState = new GameState();
         this.#createDeck();//init new deck
@@ -67,12 +66,9 @@ class Game extends BindToHtml{
         this.#dealCards();
 
         this.#buttonsHandle();
-
-
     }
 
-    nextRoundInit = () =>{
-
+    nextRoundInit = () => {
         this.gameState.clearMoneyPool();
 
         this.gameState.increaseNumberOfRound();
@@ -88,25 +84,21 @@ class Game extends BindToHtml{
 
         this.#createDeck();
         this.#dealCards();
-
     }
 
-    #createDeck(){
+    #createDeck() {
         this.deck = new Deck();
         this.deck.shuffle();
     }
 
-    #initPlayerNameInHtml(player, placesForName){
-
+    #initPlayerNameInHtml(player, placesForName) {
         for(let place = 0; place < placesForName.length; place++){
             placesForName[place].textContent = player.name
         }
-        
     }
 
     //deal two cards to all players
-    #dealCards(){
-
+    #dealCards() {
         for(let numberOfDeal = 0; numberOfDeal < 2; numberOfDeal++){
             
             //first player
@@ -130,11 +122,9 @@ class Game extends BindToHtml{
         this.#calculatePlayersPoints();
         this.#setPlayersStats();
         this.#setGameState();
-
     }
 
-    #buttonsHandle(){
-
+    #buttonsHandle() {
         const takeCardButton = this.bindById(TAKE_CARD_BUTTON_ID);
         const stayButton = this.bindById(STAY_BUTTON_ID);
 
@@ -142,25 +132,20 @@ class Game extends BindToHtml{
         stayButton.addEventListener('click', this.#handleStayButton)
 
         this.#handleReturnButton();
-
     }
 
     //append card to player cards container
-    #appendCard(id, card){
-
+    #appendCard(id, card) {
         const cardsContainer  = this.bindById(id);
-
         cardsContainer.appendChild(card);
-
     }
 
-    #calculatePlayersPoints(){
+    #calculatePlayersPoints() {
         this.firstPlayer.calculatePoints();
         this.secondPlayer.calculatePoints();
     }
 
-    #setPlayersStats(){
-
+    #setPlayersStats() {
         //first player
         const firstPlayerPointsContainer  = this.bindById(FIRTS_PLAYER_POINTS_CONTAINER_ID);
         const firstPlayerWallet = this.bindById(FIRTS_PLAYER_WALLET_ID);
@@ -176,7 +161,7 @@ class Game extends BindToHtml{
         secondPlayerWallet.textContent = this.secondPlayer.wallet;
     }
 
-    #setGameState(){
+    #setGameState() {
         const numberOfRounds = this.bindById(NUMBER_OF_ROUNDS_CONTAINER_ID);
         const moneyPool = this.bindById(MONEY_POOL_CONTAINER_ID);
 
@@ -187,7 +172,6 @@ class Game extends BindToHtml{
 
     //buttons handle
     #handleTakeCardButton = () => {
-
         let player;
         let id;
 
@@ -213,11 +197,9 @@ class Game extends BindToHtml{
         this.#calculatePlayersPoints();
         this.#setPlayersStats();
         this.#setGameState();
-
     }
 
     #handleStayButton = () => {
-
         if(this.firstPlayer.moves){
             this.firstPlayer.moves = false;
 
@@ -231,10 +213,9 @@ class Game extends BindToHtml{
             this.secondPlayer.moves = false;
             this.#checksEndOfRound();
         } 
-
     }
 
-    #handleReturnButton(){
+    #handleReturnButton() {
         const button = this.bindById(RETURN_BUTTON_ID);
 
         button.addEventListener('click', ()=>{
@@ -243,7 +224,7 @@ class Game extends BindToHtml{
         })
     }
 
-    #handleAI(player, AI){
+    #handleAI(player, AI) {
         if(player.points < AI.points && player.points < this.gameState.pointsToWon || player.points === this.gameState.pointsToWon || player.points > this.gameState.pointsToWon){
             this.#setPlayersStats();
             this.#setGameState();
@@ -269,8 +250,7 @@ class Game extends BindToHtml{
         this.#checksEndOfRound();
     }
 
-    #checksEndOfRound(){
-
+    #checksEndOfRound() {
         const wonMoney = this.gameState.clearMoneyPool()
         let winner;
 
@@ -314,11 +294,9 @@ class Game extends BindToHtml{
             message.initRoundMessage(winner);
             
         }
-
     }
 
-    #checksEndOfGame(){
-
+    #checksEndOfGame() {
         const {costOfDeal} = GAME_COSTS;
 
         let playNextRound = true;
@@ -350,11 +328,9 @@ class Game extends BindToHtml{
         }
 
         return playNextRound;
-
     }
 
     cleanCardsContainer(){
-
         //clean html
         const firstPlayerCardsContainer = this.bindById(FIRST_PLAYER_CARDS_CONTAINER_ID);
         const secondPlayerCardsContainer = this.bindById(SECOND_PLAYER_CARDS_CONTAINER_ID);
@@ -368,7 +344,6 @@ class Game extends BindToHtml{
             secondPlayerCardsContainer.removeChild(secondPlayerCardsContainer.lastChild)
         }
     }
-
 }
 
 export const game = new Game();

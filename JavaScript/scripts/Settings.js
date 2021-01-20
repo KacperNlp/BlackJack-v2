@@ -3,7 +3,7 @@ import {BindToHtml} from './BindToHtml.js'
 export const SETTINGS_LAYER_ID = 'settings-layer';
 
 class Settings extends BindToHtml{
-    constructor(){
+    constructor() {
         super(SETTINGS_LAYER_ID);
 
         this.firstPlayerName = null;
@@ -15,16 +15,16 @@ class Settings extends BindToHtml{
     //AI
     #withAI = false;
 
-    set withAI(value){
+    set withAI(value) {
         this.#withAI = value;
     }
 
-    get withAI(){
+    get withAI() {
         return this.#withAI;
     }
 
 
-    getInitialSettings(firstName, secondName, walletCash){
+    getInitialSettings(firstName, secondName, walletCash) {
         this.firstPlayerName = firstName;
         this.secondPlayerName = secondName;
         this.walletCash = walletCash;

@@ -6,11 +6,11 @@ export class GameState{
         this.pointsToWon = 21;
     }
 
-    increaseMoneyPool(cash){
+    increaseMoneyPool(cash) {
         this.moneyPool += cash;
     }
 
-    clearMoneyPool(){
+    clearMoneyPool() {
 
         const cash = this.moneyPool;
         this.moneyPool = 0;
@@ -18,7 +18,7 @@ export class GameState{
 
     }
 
-    increaseNumberOfRound(){
+    increaseNumberOfRound() {
         this.numberOfRound++;
     }
 }

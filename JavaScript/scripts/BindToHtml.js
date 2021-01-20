@@ -1,13 +1,13 @@
 export class BindToHtml{
-    constructor(id){
+    constructor(id) {
         this.layer = this.bindById(id);
     }
 
-    bindById(id){
+    bindById(id) {
         return document.getElementById(id)
     }
 
-    bindElementsBySelector(selector){
+    bindElementsBySelector(selector) {
         return document.querySelectorAll(selector)
     }
 }
