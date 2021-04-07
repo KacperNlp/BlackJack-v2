@@ -27,5 +27,7 @@ I used in this project:
 - HTML,
 - some GSAP (to create input and output animations).
 
+LIVE: ** https://kacpernlp.github.io/BlackJack-v2/ **
+
 <br/>
 status of project: finished.
